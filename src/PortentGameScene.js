@@ -35,42 +35,40 @@ export default class PortentGame extends Phaser.Scene {
 		const bucketHeight = 768;
 		let activefruits = [];
 
-		const fruits = [
-			{'name':'blueberry', 'value':2},
-			{'name':'cherry', 'value':4},
-			{'name':'strawberry', 'value':6},
-			{'name':'lemon', 'value':8},
-			{'name':'orange', 'value':10},
-			{'name':'apple', 'value':12},
-			{'name':'pear', 'value':14},
-			{'name':'peach', 'value':16},
-			{'name':'pineapple', 'value':18},
-			{'name':'melon', 'value':20},
-			{'name':'watermelon', 'value':22},
-		]
-		// Generate a random index
-		const randomIndex = Math.floor(Math.random() * fruits.length);
-		// Retrieve the random element
-		const randomFruit = fruits[randomIndex];
-		console.log('randomFruit', randomFruit);
-
+		this.matter.world.setBounds(0, 0, bucketWidth, bucketHeight, 32, true, true, false, true);
+		
 		const createFruit = () => {
+			const fruits = [
+				{'name':'blueberry', 'value':2},
+				{'name':'cherry', 'value':4},
+				{'name':'strawberry', 'value':6},
+				{'name':'lemon', 'value':8},
+				{'name':'orange', 'value':10},
+				{'name':'apple', 'value':12},
+				{'name':'pear', 'value':14},
+				{'name':'peach', 'value':16},
+				{'name':'pineapple', 'value':18},
+				{'name':'melon', 'value':20},
+				{'name':'watermelon', 'value':22},
+			]
+			// Generate a random index
+			const randomIndex = Math.floor(Math.random() * fruits.length);
+			// Retrieve the random element
+			const randomFruit = fruits[randomIndex];
+			console.log('randomFruit', randomFruit);
+	
 			let fruit = this.matter.add.image(Phaser.Math.Between(0, 800), 0, randomFruit.name).setIgnoreGravity(true);
 			fruit.variety = randomFruit.name;
 			fruit.value = randomFruit.value;
-			activefruits.push(fruit);
-			console.log('activefruits', activefruits);
-
+	
 			return fruit;
-
 		}
 
-		this.matter.world.setBounds(0, 0, bucketWidth, bucketHeight, 32, true, true, false, true);
-		
 		/**
 		 * Create a ball at the top center of the screen
 		 */
 		const currentFruit = createFruit();
+		//activefruits.push(currentFruit);
 		
 		/**
 		 * When user clicks set X coordinate of ball to the X coordinate of the mouse
@@ -79,7 +77,8 @@ export default class PortentGame extends Phaser.Scene {
 			console.log('Bucket clicked');
 			currentFruit.x = pointer.x;
 			currentFruit.setIgnoreGravity(false);
-			createFruit();
+			activefruits.push(createFruit());
+			console.log(activefruits);
 		});
 		
 	}
