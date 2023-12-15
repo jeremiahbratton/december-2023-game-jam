@@ -44,12 +44,13 @@ export default class PortentGame extends Phaser.Scene {
 			{'name':'cherry', 'value':4, 'width': 60, 'height': 60},
 			{'name':'strawberry', 'value':8, 'width': 71, 'height': 71},
 			{'name':'lemon', 'value':16, 'width': 86, 'height': 86},
-			{'name':'orange', 'value':24, 'width': 103, 'height': 103},
-			{'name':'apple', 'value':48, 'width': 123, 'height': 123},
-			{'name':'pear', 'value':96, 'width': 148, 'height': 148},
-			{'name':'pineapple', 'value':192, 'width': 178, 'height': 178},
-			{'name':'melon', 'value':384, 'width': 213, 'height': 213},
-			{'name':'watermelon', 'value':768, 'width': 256, 'height': 256},
+			{'name':'orange', 'value':32, 'width': 103, 'height': 103},
+			{'name':'apple', 'value':64, 'width': 123, 'height': 123},
+			{'name':'pear', 'value':128, 'width': 148, 'height': 148},
+			{'name':'pineapple', 'value':256, 'width': 178, 'height': 178},
+			{'name':'melon', 'value':512, 'width': 213, 'height': 213},
+			{'name':'watermelon', 'value':1024, 'width': 256, 'height': 256},
+			
 			//{'name':'watermelon', 'value':1536, 'width': 256, 'height': 256},
 			//{'name':'peach', 'value':192, 'width': 256, 'height': 256},
 		];
@@ -61,8 +62,8 @@ export default class PortentGame extends Phaser.Scene {
 			// Retrieve the random element
 			const randomFruit = fruits[randomIndex];
 			console.log('randomFruit', randomFruit);
-	
-			let fruit = this.matter.add.image(Phaser.Math.Between(0, 800), 0, randomFruit.name).setIgnoreGravity(true);
+			
+			let fruit = this.matter.add.image(randomFruit.width, randomFruit.height, randomFruit.name).setIgnoreGravity(true);
 			fruit.setCircle();
 			// @ts-ignore
 			fruit.variety = randomFruit.name;
@@ -100,35 +101,36 @@ export default class PortentGame extends Phaser.Scene {
 		 */
 		this.matter.world.on('collisionstart', function (event, bodyA, bodyB) {
 			if (bodyA.label === "fruit" && bodyB.label === "fruit") {
-				//console.log(event);
-				//console.log("fruitA", bodyA.gameObject.texture.key);
-				//console.log("fruitB", bodyB.gameObject.texture.key);
 				if(bodyA.gameObject.texture.key === bodyB.gameObject.texture.key) {
 					console.log(`MATCH ${bodyA.gameObject.texture.key} and ${bodyB.gameObject.texture.key}`);
-					//this.matter.remove(event.world, bodyB);
 					
 					// Lookup our upgraded fruit based on value. 2x the current fruit.
 					console.log('bodyA value:', [bodyA.gameObject.texture.key, bodyA.gameObject.value]);
 					console.log('finding fruit with value of', (bodyA.gameObject.value*2));
 
 					// If two watermelons collide, delete/remove both
-					if (bodyA.gameObject.texture.key == 'watermelon') {
+					if (bodyA.gameObject.texture.key === 'watermelon') {
 						 // Destroy both game objects
-						bodyA.destroy();
-						bodyB.destroy();
+						bodyA.gameObject.destroy();
+						bodyB.gameObject.destroy();
 						// Remove the bodies from the physics world
-						matterWorld.remove(bodyA);
-						matterWorld.remove(bodyB);
+						// matterWorld.remove(bodyA);
+						// matterWorld.remove(bodyB);
 					} else {
 						const upgradedFruit = fruits.find(item => item.value === (bodyA.gameObject.value*2));
-						console.log('upgradedFruit', upgradedFruit);
-
-						// Set the new texture for the game object
-						bodyA.gameObject.setTexture(upgradedFruit.name);
+						
+						if (upgradedFruit) {
+							// Set the new texture for the game object
+							bodyA.gameObject.setTexture(upgradedFruit.name);
+							bodyA.gameObject.value = upgradedFruit.value;
+							bodyA.gameObject.setDisplaySize(upgradedFruit.width, upgradedFruit.height);
+							bodyA.gameObject.setCircle();
+						}
 
 						// Destroy bodyB
-						bodyB.destroy();
-						matterWorld.remove(bodyB);
+						
+						bodyB.gameObject.destroy();
+						matterWorld.remove(bodyB, true);
 					}
 					
 				}
