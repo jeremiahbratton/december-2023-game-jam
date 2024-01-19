@@ -8,20 +8,19 @@ export default class PortentGame extends Phaser.Scene {
 	preload() {
 		//this.load.setBaseURL('https://labs.phaser.io')
 
-		this.load.image('sky', 'https://labs.phaser.io/assets/skies/space3.png')
+		this.load.image('sky', 'https://labs.phaser.io/assets/skies/space3.png');
 		//this.load.image('cherry', 'assets/particles/red.png')
 
-		this.load.image('blueberry', 'img/blueberry.png')
-		this.load.image('cherry', 'img/cherry.png')
-		this.load.image('strawberry', 'img/strawberry.png')
-		this.load.image('lemon', 'img/lemon.png')
-		this.load.image('orange', 'img/orange.png')
-		this.load.image('apple', 'https://labs.phaser.io/assets/particles/red.png')
-		this.load.image('pear', 'https://labs.phaser.io/assets/particles/yellow.png')
-		this.load.image('peach', 'https://labs.phaser.io/assets/particles/red.png')
-		this.load.image('pineapple', 'https://labs.phaser.io/assets/particles/green.png')
-		this.load.image('melon', 'https://labs.phaser.io/assets/particles/green.png')
-		this.load.image('watermelon', 'https://labs.phaser.io/assets/particles/green.png')
+		this.load.image('blueberry', 'img/blueberry.png');
+		this.load.image('cherry', 'img/cherry.png');
+		this.load.image('strawberry', 'img/strawberry.png');
+		this.load.image('lemon', 'img/lemon.png');
+		this.load.image('orange', 'img/orange.png');
+		this.load.image('apple', 'img/apple.png');
+		this.load.image('pear', 'img/pear.png');
+		this.load.image('pineapple', 'img/pineapple.png');
+		this.load.image('melon', 'img/cantaloupe.png');
+		this.load.image('watermelon', 'img/watermelon.png');
 	}
 
 	/**
@@ -42,7 +41,7 @@ export default class PortentGame extends Phaser.Scene {
 		 */
 		this.add.image(0, 0, 'sky').setOrigin(0, 0);
 
-		this.matter.world.setBounds(0, 0, bucketWidth, bucketHeight, 32, true, true, false, true);
+		this.matter.world.setBounds(bucketWidth / 2, 0, bucketWidth, bucketHeight, 32, true, true, false, true);
 
 		const fruits = [
 			{'name':'blueberry', 'value':2, 'width': 50, 'height': 50},
@@ -55,9 +54,6 @@ export default class PortentGame extends Phaser.Scene {
 			{'name':'pineapple', 'value':256, 'width': 178, 'height': 178},
 			{'name':'melon', 'value':512, 'width': 213, 'height': 213},
 			{'name':'watermelon', 'value':1024, 'width': 256, 'height': 256},
-			
-			//{'name':'watermelon', 'value':1536, 'width': 256, 'height': 256},
-			//{'name':'peach', 'value':192, 'width': 256, 'height': 256},
 		];
 
 		const createFruit = () => {
