@@ -37,6 +37,11 @@ export default class PortentGame extends Phaser.Scene {
 		const bucketHeight = 768;
 		let activefruits = [];
 
+		/**
+		 * Set stage background image
+		 */
+		this.add.image(0, 0, 'sky').setOrigin(0, 0);
+
 		this.matter.world.setBounds(0, 0, bucketWidth, bucketHeight, 32, true, true, false, true);
 
 		const fruits = [
@@ -61,7 +66,6 @@ export default class PortentGame extends Phaser.Scene {
 			const randomIndex = Math.floor(Math.random() * fruits.length);
 			// Retrieve the random element
 			const randomFruit = fruits[randomIndex];
-			console.log('randomFruit', randomFruit);
 			
 			let fruit = this.matter.add.image(randomFruit.width, randomFruit.height, randomFruit.name).setIgnoreGravity(true);
 			fruit.setCircle();
